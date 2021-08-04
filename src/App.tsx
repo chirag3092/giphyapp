@@ -1,25 +1,50 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+
+import { Paper, Switch, AppBar, Toolbar } from '@material-ui/core';
+import { ThemeProvider, createTheme } from "@material-ui/core/styles";
+import Giphy from './components/Giphy';
+import { grey, deepPurple } from '@material-ui/core/colors';
 
 function App() {
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
+  
+  
+ 
+  const handleThemeChange = () => {
+    console.log(isDarkTheme);
+    setIsDarkTheme(!isDarkTheme);
+  };
+
+  const lightTheme = createTheme({
+    palette: {
+      type: 'light',
+      primary: {
+        main: deepPurple[500],
+      },
+    },
+  });
+  
+  const darkTheme = createTheme({
+    palette: {
+       type: 'dark',
+       primary: {
+         main: grey['900'],
+       },
+    },
+  });
+ 
+  const themeMode = isDarkTheme ? darkTheme : lightTheme;
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <ThemeProvider theme={themeMode}>
+        <AppBar position="static">
+          <Toolbar>
+            <Switch checked={isDarkTheme} onChange={handleThemeChange} />
+          </Toolbar>
+        </AppBar>
+        <Paper style={{ height: '100%' }}>
+          <Giphy />
+        </Paper>
+      </ThemeProvider>
   );
 }
 
